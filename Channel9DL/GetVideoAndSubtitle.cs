@@ -32,6 +32,11 @@ namespace Channel9DL
 
             //XPath匹配
             hrefList = videoUrl.DocumentNode.SelectNodes("//*[@id='video-download']/ul/li[4]/div/a");
+            //*[@id="video-download"]/ul/li[4]/div/a
+            
+            //*[@id="video-download"]/ul  一部分视频是这样的...
+            //*[@id="video-download"]/ul 另一部分是这样.....
+            // 巨硬你大爷的.....
 
             //无结果会为空值
             if (hrefList != null)
@@ -106,7 +111,9 @@ namespace Channel9DL
                     HtmlAttribute att = href.Attributes["href"];
                     Console.WriteLine("课程详细地址：");
                     Console.WriteLine(url + att.Value);
-                    videoList.Add((string)(url + att.Value));
+                    videoList.Add((string)("http://channel9.msdn.com/" + att.Value));
+
+                    Console.WriteLine(GetVideoAddress("http://channel9.msdn.com/" + att.Value));
 
                 }
 

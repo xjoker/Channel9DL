@@ -1,5 +1,6 @@
 ﻿using HtmlAgilityPack;
 using System;
+using System.Collections;
 
 
 namespace Channel9DL
@@ -9,7 +10,7 @@ namespace Channel9DL
 
         HtmlWeb webClient = new HtmlWeb();
 
-        HtmlDocument videoUrl = null; 
+        HtmlDocument videoUrl = null;
 
         HtmlNodeCollection hrefList = null;//XPath
 
@@ -77,7 +78,44 @@ namespace Channel9DL
             return null;
         }
 
+        /// <summary>
+        /// 获取页面的所有视频链接
+        /// </summary>
+        /// <param name="url">课程地址</param>
+        /// <returns>返回列表</returns>
+        public ArrayList GetVideoList(string url)
+        {
+            videoUrl = webClient.Load(url);
 
-     
+            ArrayList videoList = new ArrayList();
+
+
+            //分析标题的XPath
+            string classList = ".//a[@class='title']";
+
+            //XPath匹配
+            hrefList = videoUrl.DocumentNode.SelectNodes(classList);
+
+            //得到课程数量
+            int count = hrefList.Count;
+
+            if(hrefList!=null)
+            {
+                foreach (HtmlNode href in hrefList)
+                {
+                    HtmlAttribute att = href.Attributes["href"];
+                    Console.WriteLine("课程详细地址：");
+                    Console.WriteLine(url + att.Value);
+                    videoList.Add((string)(url + att.Value));
+
+                }
+
+            }
+
+            return videoList;
+
+        }
+
+
     }
 }

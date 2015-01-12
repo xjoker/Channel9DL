@@ -15,11 +15,16 @@ namespace Channel9DL
         /// <param name="language">传入要下载的字幕语言种类，默认简中</param>
         public static void Subtitle(string url,string name,string language="zh-cn")
         {
+            GetVideoAndSubtitle gvas = new GetVideoAndSubtitle();
 
             WebClient client = new WebClient();
 
             try
             {
+
+                //分析字幕地址
+                url = gvas.GetSubtitleAddress(url);
+
                 System.Collections.Specialized.NameValueCollection VarPar = new System.Collections.Specialized.NameValueCollection();
 
                 //POST参数，这个将返回简体中文的字幕

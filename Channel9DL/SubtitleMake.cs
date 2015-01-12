@@ -13,7 +13,7 @@ namespace Channel9DL
         /// <param name="url">字幕的地址</param>
         /// <param name="name">视频名称</param>
         /// <param name="language">传入要下载的字幕语言种类，默认简中</param>
-        public SubtitleMake(string url,string name,string language="zh-cn")
+        public void Subtitle(string url,string name,string language="zh-cn")
         {
 
             WebClient client = new WebClient();
@@ -70,7 +70,7 @@ namespace Channel9DL
                 }
 
                 //存储在程序的目录下，和视频文件同名
-                string savePath = System.Environment.CurrentDirectory + name + ".srt";
+                string savePath = System.Environment.CurrentDirectory+"\\" + name + ".srt";
 
                 StreamWriter sw = new StreamWriter(savePath, true, System.Text.Encoding.UTF8);
                 sw.Write(sbSRT);

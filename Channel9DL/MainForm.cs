@@ -14,6 +14,7 @@ namespace Channel9DL
     {
 
         GetVideoAndSubtitle gva = new GetVideoAndSubtitle();
+        SubtitleMake sm = new SubtitleMake();
         public MainForm()
         {
             InitializeComponent();
@@ -21,12 +22,30 @@ namespace Channel9DL
 
         private void button1_Click(object sender, EventArgs e)
         {
+
             //ArrayList al = gva.GetVideoList(textBox1.Text.ToString());
             videoLib.video vd = gva.GetVideoList(textBox1.Text.ToString());
-            foreach(var a in vd.url)
+
+
+            List<string> test1 = new List<string>(vd.vAndd.Keys);
+            List<string> test2 = new List<string>(vd.vAndd.Values);
+
+            int ccc = vd.url.Count;
+            for (int i = 0; i < ccc;i++ )
             {
-                Console.WriteLine(a);
+                Console.WriteLine(test1[i]);
+                Console.WriteLine(test2[i]);
+                Console.WriteLine(vd.url[i]);
             }
+
+
+                foreach (var a in vd.url)
+                {
+
+                    //string subtitle = gva.GetSubtitleAddress(a.ToString());
+                    //sm.Subtitle(subtitle, vd.vAndd.Keys.ToString());
+
+                }
         }
     }
 }

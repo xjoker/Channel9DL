@@ -58,6 +58,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="run.cs" />
     <Compile Include="SubtitleMake.cs" />
     <Compile Include="videoLib.cs" />
     <EmbeddedResource Include="MainForm.resx">

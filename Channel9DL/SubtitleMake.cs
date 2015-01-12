@@ -54,23 +54,31 @@ namespace Channel9DL
                 //实际的行数(也就是去掉前三行无关的信息)
                 int line = 1;
 
+
+                //字幕解析
+                //字幕开始第一行都是"WEBVTT"开头，但是下面的空行不一定是2行还是3行
+                //现在只能读一行判断一行，而且字幕有的是2行或者3行的，并不一定是一行
+                //这只能做了个循环判断字幕的内容了...
+                //这代码简直糟透了... 但是能用.....
+                string readread = null;
                 while (sr.Peek() > 0)
                 {
                     lineCount++;
-                    if (lineCount > 3)
+
+                    readread = sr.ReadLine();
+
+                    if (readread != "WEBVTT" && readread != "")
                     {
                         sbSRT.AppendLine(line++.ToString());//字幕标号
-
-                        //读取3行
-                        sbSRT.AppendLine(sr.ReadLine());//时间戳
-                        sbSRT.AppendLine(sr.ReadLine());//字幕内容
-                        sbSRT.AppendLine(sr.ReadLine());//空行
+                        sbSRT.AppendLine(readread);//字幕内容
+                        readread = sr.ReadLine();
+                        while(readread!="")
+                        {
+                            sbSRT.AppendLine(readread);//字幕内容
+                            readread = sr.ReadLine();
+                        }
                     }
-                    else
-                    {
-                        //去掉前三行无关的信息
-                        sr.ReadLine();
-                    }
+                    sbSRT.AppendLine("");//添加空行
 
                 }
 

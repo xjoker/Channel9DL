@@ -1,6 +1,11 @@
 ﻿using HtmlAgilityPack;
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Net;
+using System.Text;
+using System.Xml.Linq;
+using System.Linq;
 
 
 namespace Channel9DL
@@ -20,39 +25,6 @@ namespace Channel9DL
             set { videoUrl = value; }
         }
 
-        /// <summary>
-        /// 获取视频地址
-        /// </summary>
-        /// <param name="url">视频所在的网页</param>
-        /// <returns>返回完整的视频地址，如果没有地址会返回空值</returns>
-        public string GetVideoAddress(string url)
-        {
-            //加载需要分析的网页....
-            videoUrl = webClient.Load(url);
-
-            //XPath匹配
-            hrefList = videoUrl.DocumentNode.SelectNodes("//*[@id='video-download']/ul/li[4]/div/a");
-            //*[@id="video-download"]/ul/li[4]/div/a
-            
-            //*[@id="video-download"]/ul  一部分视频是这样的...
-            //*[@id="video-download"]/ul 另一部分是这样.....
-            // 巨硬你大爷的.....
-
-            //无结果会为空值
-            if (hrefList != null)
-            {
-                foreach (HtmlNode href in hrefList)
-                {
-                    HtmlAttribute att = href.Attributes["href"];
-                    Console.WriteLine("视频地址(High MP4)：");
-                    Console.WriteLine(att.Value);
-                    return att.Value;
-                }
-
-            }
-
-            return null;
-        }
 
         /// <summary>
         /// 获取字幕地址
@@ -88,38 +60,64 @@ namespace Channel9DL
         /// </summary>
         /// <param name="url">课程地址</param>
         /// <returns>返回列表</returns>
-        public ArrayList GetVideoList(string url)
+        public videoLib.video GetVideoList(string url)
         {
             videoUrl = webClient.Load(url);
 
-            ArrayList videoList = new ArrayList();
-
 
             //分析标题的XPath
-            string classList = ".//a[@class='title']";
+            string classList = "/html/head/link[24]";
 
             //XPath匹配
             hrefList = videoUrl.DocumentNode.SelectNodes(classList);
+            videoLib.video vd = new videoLib.video();
+            vd.url = new ArrayList();//初始化url数组
+            Dictionary<string, string> videoList = new Dictionary<string, string>();
 
-            //得到课程数量
-            int count = hrefList.Count;
+            string rss = null;
 
-            if(hrefList!=null)
+            if (hrefList != null)
             {
                 foreach (HtmlNode href in hrefList)
                 {
                     HtmlAttribute att = href.Attributes["href"];
-                    Console.WriteLine("课程详细地址：");
-                    Console.WriteLine(url + att.Value);
-                    videoList.Add((string)("http://channel9.msdn.com/" + att.Value));
-
-                    Console.WriteLine(GetVideoAddress("http://channel9.msdn.com/" + att.Value));
+                    Console.WriteLine("RSS：");
+                    Console.WriteLine(att.Value);
+                    rss = "http://channel9.msdn.com" + att.Value;
+                    Console.WriteLine(rss);
 
                 }
 
+                WebClient client = new WebClient();
+                byte[] list = client.DownloadData(rss);
+
+                string aa = Encoding.UTF8.GetString(list);
+
+                XElement xe = XElement.Parse(aa);
+
+                var a = from x in xe.Descendants("item")
+                        select new
+                        {
+                            title = x.Element("title").Value,
+                            mp4 = x.Element("enclosure").FirstAttribute.Value,
+                            link = x.Element("link").Value,
+                        };
+                int count = 0;
+                foreach (var b in a)
+                {
+                    //将视频标题和下载地址存入字典
+                    videoList.Add(b.title, b.mp4);
+
+                    //存入自定义的类型中
+                    vd.vAndd = videoList;
+                    vd.url.Add(b.link);
+                }
+
+
             }
 
-            return videoList;
+            return vd;
+            //return videoList;
 
         }
 

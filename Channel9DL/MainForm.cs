@@ -21,7 +21,12 @@ namespace Channel9DL
 
         private void button1_Click(object sender, EventArgs e)
         {
-            ArrayList al = gva.GetVideoList(textBox1.Text.ToString());
+            //ArrayList al = gva.GetVideoList(textBox1.Text.ToString());
+            videoLib.video vd = gva.GetVideoList(textBox1.Text.ToString());
+            foreach(var a in vd.url)
+            {
+                Console.WriteLine(a);
+            }
         }
     }
 }

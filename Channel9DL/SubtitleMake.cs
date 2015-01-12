@@ -13,7 +13,7 @@ namespace Channel9DL
         /// <param name="url">字幕的地址</param>
         /// <param name="name">视频名称</param>
         /// <param name="language">传入要下载的字幕语言种类，默认简中</param>
-        public void Subtitle(string url,string name,string language="zh-cn")
+        public static void Subtitle(string url,string name,string language="zh-cn")
         {
 
             WebClient client = new WebClient();
@@ -78,10 +78,10 @@ namespace Channel9DL
 
                 Console.WriteLine("字幕下载完毕");
             }
-            catch
+            catch(Exception ex)
             {
-
-                System.Windows.Forms.MessageBox.Show("获取字幕失败！可能这个视频没有简体字幕！");
+                //System.Windows.Forms.MessageBox.Show(ex.ToString());
+                System.Windows.Forms.MessageBox.Show("获取字幕失败！\n可能这个视频没有简体字幕，或者程序目录没有写入权限");
             }
         }
 

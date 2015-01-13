@@ -13,11 +13,12 @@ namespace Channel9DL
 {
     public partial class MainForm : Form
     {
-
+        public delegate void SettbxVideoDown(string str);
 
         public MainForm()
         {
             InitializeComponent();
+           
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -34,16 +35,26 @@ namespace Channel9DL
 
         //*********************************************
 
-        public void SettbxVideoDownList(string text)
+        public  void SettbxVideoDownList(string text)
         {
-            tbxVideoDownList.Text = text;
+            if(this.tbxVideoDownList.InvokeRequired)
+            {
+                SettbxVideoDown st = new SettbxVideoDown(SettbxVideoDownList);
+                this.Invoke(st, new object[] { text });
+            }
+            else
+            {
+                tbxVideoDownList.Text = text;
+            }
+
+            
         }
 
-        public void SetlabVideoProgress(string text)
-        {
+        //public void SetlabVideoProgress(string text)
+        //{
            
-            labVideoProgress.Text = text;
-        }
+        //    labVideoProgress.Text = text;
+        //}
 
 
         //*********************************************

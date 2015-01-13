@@ -26,6 +26,7 @@ namespace Channel9DL
             {
                 //显示视频总数
 
+                MainForm.SettbxVideoDown=new MainForm.SettbxVideoDown()
 
                 //labVideoCount.Text = ccc.ToString();
 

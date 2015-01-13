@@ -15,7 +15,7 @@ namespace Channel9DL
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainForm());
 
-            System.Windows.Forms.Control.CheckForIllegalCrossThreadCalls = false;
+            //System.Windows.Forms.Control.CheckForIllegalCrossThreadCalls = false;
         }
     }
 }

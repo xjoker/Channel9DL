@@ -30,7 +30,9 @@ namespace Channel9DL
         }
         private void adad()
         {
-            run.gogo(textBox1.Text);
+            run r = new run();
+            r.Box = this.tbxVideoDownList;
+            r.gogo(textBox1.Text);
         }
 
         //*********************************************

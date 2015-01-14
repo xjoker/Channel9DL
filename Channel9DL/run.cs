@@ -8,9 +8,25 @@ namespace Channel9DL
     class run
     {
 
-        
+        public System.Windows.Forms.TextBox Box = null;
 
-        public static void gogo(object obj)
+
+        public void RefreshTextBox(string msg)
+        {
+            if (Box == null) return;
+            MainForm.SettbxVideoDown dt = new MainForm.SettbxVideoDown(RefreshTextBox);
+
+            if (Box.InvokeRequired)
+            {
+                Box.Invoke(dt, new object[] { msg });
+            }
+            else
+            {
+                Box.Text += msg;
+            }
+        }
+
+        public void gogo(object obj)
         {
             string url = obj as string;
 
@@ -26,7 +42,7 @@ namespace Channel9DL
             {
                 //显示视频总数
 
-                MainForm.SettbxVideoDown=new MainForm.SettbxVideoDown()
+               
 
                 //labVideoCount.Text = ccc.ToString();
 
@@ -50,7 +66,7 @@ namespace Channel9DL
                     //后续做个调用迅雷吧...........
                     //tbxVideoDownList.Text += videoAddress[i].ToString() + "\n";
                    // mf.SettbxVideoDownList(videoAddress[i].ToString() + "\n");
-
+                    RefreshTextBox(videoAddress[i].ToString() + "\n");
 
                     //提取视频的名称
                     string fileNameWithoutExtension = System.IO.Path.GetFileNameWithoutExtension(videoAddress[i]);
